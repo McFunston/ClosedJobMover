@@ -3,6 +3,7 @@
 import csv
 import unittest
 import os
+import shutil
 
 def read_log(file_name):
 
@@ -57,7 +58,7 @@ def move_jobs(file_name, path, new_path):
     for job in jobs:
         shutil.move(path+'/'+job, new_path)
 
-move_jobs(closed.csv, 'C:/Projects/ClosedJobMover/Test','C:/Projects/ClosedJobMover/Test/archive')
+move_jobs('closed.csv', 'C:/Projects/ClosedJobMover/Test','C:/Projects/ClosedJobMover/Test/archive')
 #jobs = list_jobs('TestData/ProofLog.csv')
 #print(jobs)
 
