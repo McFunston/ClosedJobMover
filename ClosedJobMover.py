@@ -5,6 +5,8 @@ import unittest
 import os
 import shutil
 
+err_log = list()
+
 def read_log(file_name):
 
     #csvfile = open(file_name, newline='', encoding='latin-1', mode='r')
@@ -56,9 +58,13 @@ def list_jobs(file_name, path):
 def move_jobs(file_name, path, new_path):
     jobs = list_jobs(file_name, path)
     for job in jobs:
-        shutil.move(path+'/'+job, new_path)
+        try:
+            shutil.move(path+'/'+job, new_path)
+        except Exception as err:
+            err_log.append([job, err])
 
 move_jobs('closed.csv', 'C:/Projects/ClosedJobMover/Test','C:/Projects/ClosedJobMover/Test/archive')
+print(err_log)
 #jobs = list_jobs('TestData/ProofLog.csv')
 #print(jobs)
 
