@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Tools for extracting job info from CSV files"""
 import csv
+import sys
 import unittest
 import os
 import shutil
@@ -85,7 +86,7 @@ def move_jobs(file_name, path, new_path):
     for job in jobs:
         try:
             shutil.move(path+'/'+job, new_path)
-            err_log.append([datetime.today(),job, 'Successfully move to '+path+'/'+job],'')
+            err_log.append([datetime.today(),job, 'Successfully move to '+path+'/'+job,''])
         except Exception as err:
             err_log.append([datetime.today(), job, 'Failed with the following error ', err])
             print(job, ' Failed with the following error ', err)
@@ -93,10 +94,13 @@ def move_jobs(file_name, path, new_path):
             logger(err_log)
             err_log.clear
 
-move_jobs('closed.csv', 'C:/Projects/ClosedJobMover/Test','C:/Projects/ClosedJobMover/Test/archive')
+#move_jobs('closed.csv', 'C:/Projects/ClosedJobMover/Test','C:/Projects/ClosedJobMover/Test/archive')
 
 #jobs = list_jobs('TestData/ProofLog.csv')
 #print(jobs)
 
-#if __name__ == '__main__':
-#    unittest.main()
+if __name__ == "__main__":
+    if len(sys.argv) != 4:
+        print("Arguments 'closed jobs list', 'source path', 'destination path' required")
+    else:
+        move_jobs(sys.argv[1], sys.argv[2], sys.argv[3])
