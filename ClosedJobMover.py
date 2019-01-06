@@ -4,8 +4,13 @@ import csv
 import unittest
 import os
 import shutil
+from datetime import datetime
+from datetime import timedelta
 
 err_log = list()
+
+def datetime_parser(dt):
+    return datetime.strptime(dt, '%a %b %d %H:%M:%S %Y')
 
 def read_log(file_name):
 
@@ -55,16 +60,41 @@ def list_jobs(file_name, path):
             jobs.append(log_entry[1])
     return jobs
 
+def logger(log_entries):
+    try:
+        file = open('log.txt', 'r')
+    except IOError:
+        file = open('log.txt', 'w')
+    finally:
+        file.close()
+
+    current_log = read_log('log.txt')
+    log = list()
+    log = current_log
+    #log = [[l[0], l[1], l[2]] for l in current_log if datetime_parser(l[0]) > datetime.today() - timedelta(days=60)]
+    for entry in log_entries:
+        log.append(entry)
+
+    with open('log.txt', 'w', newline='', encoding='latin-1') as csvfile:
+        writer = csv.writer(csvfile, delimiter=',', quoting=csv.QUOTE_MINIMAL)
+        for log_entry in log:
+            writer.writerow(log_entry)
+
 def move_jobs(file_name, path, new_path):
     jobs = list_jobs(file_name, path)
     for job in jobs:
         try:
             shutil.move(path+'/'+job, new_path)
+            err_log.append([datetime.today(),job, 'Successfully move to '+path+'/'+job],'')
         except Exception as err:
-            err_log.append([job, err])
+            err_log.append([datetime.today(), job, 'Failed with the following error ', err])
+            print(job, ' Failed with the following error ', err)
+        finally:
+            logger(err_log)
+            err_log.clear
 
 move_jobs('closed.csv', 'C:/Projects/ClosedJobMover/Test','C:/Projects/ClosedJobMover/Test/archive')
-print(err_log)
+
 #jobs = list_jobs('TestData/ProofLog.csv')
 #print(jobs)
 
