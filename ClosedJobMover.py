@@ -81,6 +81,18 @@ def logger(log_entries):
         for log_entry in log:
             writer.writerow(log_entry)
 
+def check_source(path):
+    if not os.path.isdir(path):
+        err_log.append([datetime.today(), path, 'Path does not exist'])
+        logger(err_log)
+        return False
+    elif not os.access(path, os.R_OK):
+        err_log.append([datetime.today(), path, 'Path is not accessible'])
+        logger(err_log)
+        return False
+    else:
+        return True
+
 def move_jobs(file_name, path, new_path):
     jobs = list_jobs(file_name, path)
     for job in jobs:
