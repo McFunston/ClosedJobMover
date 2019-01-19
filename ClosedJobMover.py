@@ -86,28 +86,30 @@ def logger(log_entries):
 def check_path(path, access_type):
     if not os.path.isdir(path):
         err_log.append([datetime.today(), path, 'Path does not exist'])
+        print(path+' does not exist')
         logger(err_log)
-        
         return False
     elif not os.access(path, access_type):
         err_log.append([datetime.today(), path, 'Path is not accessible'])
+        print(path+' is not accessible')
         logger(err_log)
-        
         return False
     else:
         return True
 
 def move_jobs(file_name, path, new_path):
     jobs = list_jobs(file_name, path)
-    for job in jobs:
-        try:
-            shutil.move(path+'/'+job, new_path)
-            err_log.append([datetime.today(),job, 'Successfully move to '+path+'/'+job,''])
-        except Exception as err:
-            err_log.append([datetime.today(), job, 'Failed with the following error ', err])
-            print(job, ' Failed with the following error ', err)
-        finally:
-            logger(err_log)
+    if check_path(path, os.R_OK) and check_path(new_path, os.W_OK) and jobs.count > 0:
+
+        for job in jobs:
+            try:
+                shutil.move(path+'/'+job, new_path)
+                err_log.append([datetime.today(),job, 'Successfully move to '+path+'/'+job,''])
+            except Exception as err:
+                err_log.append([datetime.today(), job, 'Failed with the following error ', err])
+                print(job, ' Failed with the following error ', err)
+            finally:
+                logger(err_log)
             
 
 #move_jobs('closed.csv', 'C:/Projects/ClosedJobMover/Test','C:/Projects/ClosedJobMover/Test/archive')
