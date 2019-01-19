@@ -2,3 +2,5 @@
 2019-01-06 18:33:35.269778,1007683,Failed with the following error ,Destination path 'C:/Projects/ClosedJobMover/Test/archive\1007683' already exists
 2019-01-06 18:33:35.278791,692436,Successfully move to C:/Projects/ClosedJobMover/Test/692436,
 2019-01-06 18:43:18.815056,1007683,Failed with the following error ,Destination path 'C:/Projects/ClosedJobMover/Test/archive\1007683' already exists
+2019-01-19 10:53:49.958649,1007683,Failed with the following error ,Destination path 'C:/Projects/ClosedJobMover/Test/archive\1007683' already exists
+2019-01-19 10:54:15.322893,C:/Projects/ClosedJobMover/Test/archive1,Path does not exist

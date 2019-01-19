@@ -99,12 +99,12 @@ def check_path(path, access_type):
 
 def move_jobs(file_name, path, new_path):
     jobs = list_jobs(file_name, path)
-    if check_path(path, os.R_OK) and check_path(new_path, os.W_OK) and jobs.count > 0:
+    if check_path(path, os.R_OK) and check_path(new_path, os.W_OK) and len(jobs) > 0:
 
         for job in jobs:
             try:
                 shutil.move(path+'/'+job, new_path)
-                err_log.append([datetime.today(),job, 'Successfully move to '+path+'/'+job,''])
+                err_log.append([datetime.today(),job, 'Successfully moved to '+path+'/'+job,''])
             except Exception as err:
                 err_log.append([datetime.today(), job, 'Failed with the following error ', err])
                 print(job, ' Failed with the following error ', err)
